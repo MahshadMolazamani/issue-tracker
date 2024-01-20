@@ -1,10 +1,11 @@
 "use client"
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation';
-import React from 'react'
+// this hook depends in browser APIs -> we have to convert this component to a client component
+import { usePathname } from 'next/navigation'; 
+import React from 'react';
 import { AiFillBug } from "react-icons/ai";
-import classnames from 'classnames'
+import classnames from 'classnames';
 
 const NavBar = () => {
 
