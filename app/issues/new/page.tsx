@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import { Text } from '@radix-ui/themes';
+import ErrorMessage from '@/app/components/ErrorMessage';
 
 /* interface IssueForm {
   title: string;
@@ -17,7 +18,7 @@ import { Text } from '@radix-ui/themes';
 } */
 
 type IssueForm = z.infer<typeof createIssueSchema>;
-
+ 
 const NewIssuePage = () => {
   const router = useRouter()
   const {register, control, handleSubmit, formState: {errors}} = useForm<IssueForm>({
@@ -47,13 +48,13 @@ const NewIssuePage = () => {
           <TextField.Root>
               <TextFieldInput placeholder='Title' {...register('title')} />
           </TextField.Root>
-          {errors.title && <Text color='red'>{errors.title.message}</Text>}
+          <ErrorMessage>{errors.title?.message}</ErrorMessage>
           <Controller 
             name="description"
             control={control}
             render={({ field }) => <SimpleMDE placeholder='Description' {...field} />} 
           />
-          {errors.description && <Text color='red' as='p'>{errors.description.message}</Text>}
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
           <Button>Submit New Issue</Button>
       </form>
     </div>
