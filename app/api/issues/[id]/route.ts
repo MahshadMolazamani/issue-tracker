@@ -1,6 +1,8 @@
 import { issueSchema } from "@/app/validationSchemas";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
+import authOptions from "../../auth/authOptions";
 
 // define a Typescript interface for the function parameters, specifying that params must include an id of type string.
 interface Props {
@@ -10,6 +12,10 @@ interface Props {
 // Asynchronous PATCH function to handle update request, accepting a Next.js request object and custom props.
 export async function PATCH(
     request: NextRequest, { params }: Props) {
+
+        const session = await getServerSession(authOptions)
+        if(!session)
+            return NextResponse.json({}, { status: 401 });
     // Parse the JSON body from the incoming request
     const body = await request.json();
     // Validation the reuest body against the issueSchema, ensuring it follows the expected format. 
@@ -39,6 +45,10 @@ export async function PATCH(
 
 
     export async function DELETE(request: NextRequest, {params}: {params: { id: string }}) {
+
+        const session = await getServerSession(authOptions)
+        if(!session)
+            return NextResponse.json({}, { status: 401 });
 
         const issue = await prisma.issue.findUnique({
             where: { id: parseInt(params.id) }
